@@ -1,0 +1,54 @@
+// https://www.runoob.com/sass/sass-tutorial.html
+// 规则、变量、混入、选择器、继承、内置函数
+// Sass Partials
+// 如果你不希望将一个 Sass 的代码文件编译到一个 CSS 文件，你可以在文件名的开头添加一个下划线。这将告诉 Sass 不要将其编译到 CSS 文件。
+// 3.混入
+// @mixin 指令允许我们定义一个可以在整个样式表中重复使用的样式。
+// @include 指令可以将混入（mixin）引入到文档中。
+// 项目应用：上下左右两边的伪类三角形
+// 4.继承
+// 使用 @extend 后，我们在 HTML 按钮标签中就不需要指定多个类 class="button-basic button-report" ，只需要设置 class="button-report" 类就好了。
+// 5.内置函数待应用
+@mixin custom-step-triangle($color, $offsetX, $offsetY, $direction) {
+  position: absolute;
+  top: 0;
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: $offsetY solid transparent;
+  border-bottom: $offsetY solid transparent;
+  border-left: $offsetX solid $color;
+
+  @if $direction==right {
+    right: -$offsetX;
+  } @else if $direction==left {
+    left: 0;
+  }
+  // TODO top/bottom
+}
+.custom-step-item {
+  flex: 1;
+  background: #ffffff;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  &:not(:last-child) {
+    margin-right: 15px;
+    &::after {
+      @include custom-step-triangle(#ffffff, 15px, 20px, right);
+    }
+  }
+  &:not(:first-child) {
+    &::before {
+      @include custom-step-triangle(#f4f5fa, 15px, 20px, left);
+    }
+  }
+}
+
+.step-active,
+.step-default,
+.step-finish {
+  @extend .custom-step-item;
+}
